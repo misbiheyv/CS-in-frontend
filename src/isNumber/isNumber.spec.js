@@ -61,6 +61,10 @@ describe('isNumber function', () => {
         expect(isNumber('1٦٥', [HINDU_ARABIC_DIGITS])).toBe(false)
 
         expect(isNumber('٦Ⅷa٥', [HINDU_ARABIC_DIGITS])).toBe(false)
+
+        expect(isNumber('1', [HINDU_ARABIC_DIGITS])).toBe(false)
+
+        expect(isNumber('Ⅷ', [HINDU_ARABIC_DIGITS])).toBe(false)
     })
 
 })
