@@ -3,9 +3,9 @@ import {
     isLowSurrogate,
     isHightSurrogate,
 
-} from './helpers';
+} from './helpers.js';
 
-function iter(str) {
+export default function iter(str) {
     const normalizedString = str.normalize()
 
     let 
@@ -19,22 +19,29 @@ function iter(str) {
         },
 
         next() {
-            cur = normalizedString[i];
+            cur = normalizedString[i++];
+            
+            if (cur === undefined) {
+                return {
+                    done: true,
+                    value: cur
+                }
+            }
 
             if (isLowSurrogate(cur.codePointAt(0))) {
                 prev = cur;
-                cur = normalizedString[i + 1];
+                cur = normalizedString[i++];
             }
 
             if (isHightSurrogate(cur.codePointAt(0))) {
                 return {
-                    done: ++i >= normalizedString.length,
+                    done: false,
                     value: `${prev}${cur}`
                 }
             }
 
             return {
-                done: ++i >= normalizedString.length,
+                done: false,
                 value: cur
             }
         }

@@ -9,6 +9,10 @@ const surrogate = {
     }
 }
 
-const isLowSurrogate = (char) => surrogate.low.min <= char && char <= surrogate.low.max;
+export function isLowSurrogate(char) {
+    return surrogate.low.min <= char && char <= surrogate.low.max
+}
 
-const isHightSurrogate = (char) => surrogate.high.min <= char && char <= surrogate.high.max;
+export function isHightSurrogate(char) { 
+    return surrogate.high.min <= char && char <= surrogate.high.max
+}
