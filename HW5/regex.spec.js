@@ -10,7 +10,7 @@ const calculatedStr = `
 Еще какой-то текст 20
 `;
 
-describe('', () => {
+describe('regex', () => {
     test('function check the string has different symbols of latin, digits, dollar sign and slash.', () => {
         expect(regex.isLatinNumericOrDollar('вфвфвыфвф123ы')).toBe(false)
         expect(regex.isLatinNumericOrDollar('asd$_123')).toBe(true)
