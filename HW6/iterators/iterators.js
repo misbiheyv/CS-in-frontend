@@ -109,12 +109,15 @@ function seq(...iters) {
 }
 
 function zip(...iters) {
-    let i = 0;
-    let size = Number.MAX_SAFE_INTEGER;
+    let 
+        i        = 0,
+        size     = Number.MAX_SAFE_INTEGER,
+        itersArr = [];
 
     for (const iter of iters) {
         const l = [...iter].length;
         size = l < size ? l : size;
+        itersArr.push(iter[Symbol.iterator]())
     }
 
     return {
@@ -124,18 +127,16 @@ function zip(...iters) {
         next() {
             let res = [];
 
-            if (i === size) {
+            if (i++ === size) {
                 return {
                     done: true,
                     value: undefined
                 }
             }
 
-            for (const iter of iters) {
-                res.push([...iter][i]);
+            for (const iter of itersArr) {
+                res.push(iter.next().value);
             }
-
-            i++;
 
             return {
                 done: false,
