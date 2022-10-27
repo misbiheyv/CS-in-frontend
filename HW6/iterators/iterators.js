@@ -80,31 +80,30 @@ function enumerate(iterable) {
 }
 
 function seq(...iters) {
-    let i = 0,
-        j = 0;
-
+    let 
+        i    = 0,
+        iter = iters[i][Symbol.iterator]();
 
     return {
         [Symbol.iterator]() {
             return this;
         },
         next() {
-            if (i === iters.length - 1 && j === [...iters[i]].length) {
+            let cur = iter.next();
+
+            if (i === iters.length - 1 && cur.done) {
                 return {
                     value: undefined,
                     done: true
                 }
             }
 
-            if (j >= [...iters[i]].length) {
-                i++;
-                j = 0;
+            if (cur.done) {
+                iter = iters[++i][Symbol.iterator]();
+                cur = iter.next()
             }
 
-            return {
-                value: [...iters[i]][j++],
-                done: false
-            }
+            return cur;
         }
     }
 }
