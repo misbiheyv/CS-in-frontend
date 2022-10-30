@@ -79,68 +79,64 @@ function enumerate(iterable) {
     }
 }
 
-function seq(...iters) {
-    let 
-        i    = 0,
-        iter = iters[i][Symbol.iterator]();
+function seq(...iterables) {    
+
+    const iters = iterables.map(el => el[Symbol.iterator]());
+
+    let pointer = 0;
 
     return {
         [Symbol.iterator]() {
             return this;
         },
         next() {
-            let cur = iter.next();
+            let cur = iters[pointer].next();
+            
+            while (true) {
+                if (cur.done) {
+                    if (++pointer !== iters.length) {
+                        cur = iters[pointer].next()
+                        continue ;
+                    }
 
-            if (i === iters.length - 1 && cur.done) {
-                return {
-                    value: undefined,
-                    done: true
+                    return {
+                        done: true,
+                        value: undefined
+                    }
                 }
-            }
 
-            if (cur.done) {
-                iter = iters[++i][Symbol.iterator]();
-                cur = iter.next()
+                return cur;
             }
-
-            return cur;
         }
     }
 }
 
-function zip(...iters) {
-    let 
-        i        = 0,
-        size     = Number.MAX_SAFE_INTEGER,
-        itersArr = [];
-
-    for (const iter of iters) {
-        const l = [...iter].length;
-        size = l < size ? l : size;
-        itersArr.push(iter[Symbol.iterator]())
-    }
+function zip(...iterables) {
+    const iters = iterables.map(el => el[Symbol.iterator]());
 
     return {
         [Symbol.iterator]() {
             return this;
         },
         next() {
-            let res = [];
+            let tuple = [];
+            
+            for (const iter of iters) {
+                const cur = iter.next();
 
-            if (i++ === size) {
-                return {
-                    done: true,
-                    value: undefined
+                if (cur.done) {
+                    return {
+                        done: true,
+                        value: undefined
+                    }
                 }
-            }
 
-            for (const iter of itersArr) {
-                res.push(iter.next().value);
+                tuple.push(cur.value);
             }
 
             return {
                 done: false,
-                value: res
+                value: tuple
             }
         }
     }

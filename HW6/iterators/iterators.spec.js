@@ -27,6 +27,7 @@ describe('Iterators functions', () => {
 
     test('seq. Takes some iterable structures and returns iterator by them elements', () => {
         expect([...seq([1, 2], new Set([3, 4]), 'bla')]).toEqual([1, 2, 3, 4, 'b', 'l', 'a']);
+        expect([...seq([], [1, 2], '', new Set([3, 4]), 'bla', new Set())]).toEqual([1, 2, 3, 4, 'b', 'l', 'a']);
     });
 
     test('zip. Takes some iterable structures and returns tuples of them elements', () => {
