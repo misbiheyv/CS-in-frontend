@@ -21,7 +21,7 @@ export function normalize(str) {
 // 5 задание
 
 export function calc(expression) {
-    return expression.replace(/[0-9(][0-9\+\-\*\/\(\) ]+/mig, (...args) => 
+    return expression.replace(/[(\d\-][\d\+\-\*\/\(\) ]+[\d)]/mig, (...args) => 
         Function('', `return ${args[0]}`)()
     )
 }
