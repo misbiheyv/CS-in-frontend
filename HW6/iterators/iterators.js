@@ -18,7 +18,7 @@ function random(min, max) {
         next() {
             return {
                 done: false,
-                value: (min + Math.floor(Math.random() * max)) % (max + 1)
+                value: (min + Math.floor(Math.random() * (max - min)))
             }
         }
     }
